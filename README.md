@@ -1,4 +1,4 @@
-# MotorToonGrandPrix Recompiled
+# Motor Toon Grand Prix Recompiled
 
 <!-- retcomm-readme-metrics -->
 [![GitHub downloads (all assets, all releases)](https://img.shields.io/github/downloads/cr1tika7/MotorToonGrandPrixRecomp/total)](https://github.com/cr1tika7/MotorToonGrandPrixRecomp/releases)
@@ -6,21 +6,78 @@
 [![GitHub release](https://img.shields.io/github/v/release/cr1tika7/MotorToonGrandPrixRecomp)](https://github.com/cr1tika7/MotorToonGrandPrixRecomp/releases/latest)
 <!-- /retcomm-readme-metrics -->
 
-Static recompilation of **MotorToonGrandPrix** built on
-[psxrecomp](https://github.com/mstan/psxrecomp) and
-[recomp-ui](https://github.com/RetroPortingToolKit/recomp-ui).
-
-Cartoon kart racing from Polyphony Digital, recompiled natively for PC.
+A native PC port of **Motor Toon Grand Prix** (PlayStation, 1996), made by
+static recompilation: the game's MIPS code is translated to C and compiled
+into a real Windows/Linux/macOS executable, linked against the
+[psxrecomp](https://github.com/RetroPortingToolKit/psxrecomp) PS1 hardware
+runtime and the [recomp-ui](https://github.com/RetroPortingToolKit/recomp-ui)
+launcher. It is not an emulator image and contains no game data: you need your
+own disc.
 
 | | |
 |---|---|
-| Players | 2 |
-| Region | NTSC-U |
+| Game | Motor Toon Grand Prix (USA) |
+| Serial | SCUS-94355 |
+| Players | 1–2 |
 | Publisher | Sony Computer Entertainment |
 | Year | 1996 |
+| Status | **Preview** — boots, menus and Championship races run natively |
 
-Scaffolded with the New Project Layout. See
-`psxrecomp/docs/GAME_PROJECT_SETUP.md` for the full flow.
+## Play
+
+1. Download the zip for your platform from
+   [Releases](https://github.com/cr1tika7/MotorToonGrandPrixRecomp/releases)
+   and extract it anywhere.
+2. Start `Motor_Toon_Grand_Prix_Recompiled.exe`.
+3. On first start, select the `.cue` of your own **USA** disc dump
+   (SCUS-94355). Other regions are not supported yet.
+
+No BIOS dump is needed: the bundled open-source
+[OpenBIOS](https://github.com/grumpycoders/pcsx-redux) (MIT) is used. Saves go
+to memory-card files beside the executable and survive updates.
+
+### Controls
+
+Keyboard defaults (rebind in the launcher under **Controls**, or edit
+`keybinds.ini`). Gamepads work out of the box.
+
+| In game | PlayStation | Keyboard |
+|---|---|---|
+| Accelerate | Cross | X |
+| Brake | Square | Z |
+| Use item | Circle | S |
+| Reverse | Triangle | A |
+| Camera up / down | R2 / L2 | R / E |
+| Rear view | L1 | Q |
+| Steer / menus | D-pad | Arrow keys |
+| Start / pause | Start | Return |
+
+These are the game's default button assignments (Options → Controller
+Settings), which the game lets you change.
+
+## What works
+
+Checked with the automated smoke tests in `tests/smoke` (see
+[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)):
+
+- Boot logos, attract flyover and the title screen.
+- Main menu, driver select, Replay Theater and Options; memory-card saves.
+- A full Championship race start: countdown, driving, opponents, sound.
+  All race code runs as native code, including the per-track `ENGINE`
+  overlays the game streams from `MTGPX2.DAT`, which are compiled ahead of
+  time.
+
+Not yet verified:
+
+- The three bonus programs in the **Goodies** menu (*Motor Toon GP R*,
+  *Submarine*, *Tank Combat*) are compiled ahead of time as well, but they only
+  unlock after progress in the game and have not been tested.
+- Two Player Battle (split screen).
+- OpenGL frame rate on a free GPU. The software renderer reached full speed
+  (60 fps); measurements of the OpenGL renderer were taken with other games
+  using the GPU and are not representative.
+
+Please report problems with your platform, GPU and the steps that lead to them.
 
 <!-- retcomm-readme-launcher -->
 ## Retro Launcher
@@ -47,49 +104,46 @@ BIOS/ROM/save plumbing so you are not stuck repeating each game’s first run by
 
 ## Legal
 
-You must own the original game. Disc images under `disc/` are gitignored and
-must never be committed. Retail BIOS dumps are not redistributed and no C
-derived from one may be committed; releases run on the bundled MIT OpenBIOS.
+You must own the original game. Disc images are never part of this repository
+or its releases. Retail BIOS dumps are not redistributed and no C derived from
+one is committed; releases run on the bundled MIT OpenBIOS.
 
-`generated/` (the recompiled game C) **is committed**: releases ship the
-compiled game, built by CI from that tree. Regenerate and commit it whenever
-seeds or the framework pin change.
+`generated/` holds the recompiled game C and **is committed**: release CI
+builds the shipped executable from it. Regenerate and commit it whenever seeds,
+`aot/overlays.json` or the framework pin change.
 
-Default app icon: `assets/psxrecomp.ico` (and `.png` / `.svg`) — Retro-themed controller mark from `psxrecomp/assets/`. Windows builds embed it via `APP_ICON`.
+Motor Toon Grand Prix is a trademark of Sony Interactive Entertainment. This
+project is not affiliated with or endorsed by Sony or Polyphony Digital.
 
-Optional box art under `launcher_assets/img/` may come from
-[libretro-thumbnails](https://github.com/libretro-thumbnails/libretro-thumbnails)
-(`Named_Boxarts`); see `BOXART_SOURCE.txt` when present.
+Default app icon: `assets/psxrecomp.ico` (and `.png` / `.svg`) — Retro-themed
+controller mark from `psxrecomp/assets/`. Windows builds embed it via `APP_ICON`.
 
-## Quick start (dev)
+## Building from source
+
+Full workflow, tests and debugging notes: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
 ```bash
-git submodule update --init --recursive
+git clone --recurse-submodules https://github.com/cr1tika7/MotorToonGrandPrixRecomp.git
+cd MotorToonGrandPrixRecomp
 ./psxrecomp/tools/ci/build_emitters.sh
+# Only needed after changing seeds, aot/overlays.json or the framework pin:
 python3 psxrecomp/psxrecomp_cli.py generate \
-  --config game.toml --project-root . --disc disc/<your>.cue
-git add generated && git commit -m "Regenerate game C"
-cmake -S . -B build-release -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build build-release --target psx-runtime
+  --config game.toml --project-root . --disc "/path/to/Motor Toon Grand Prix.cue"
+python3 psxrecomp/psxrecomp_cli.py rebuild \
+  --config game.toml --project-root . --build-dir build-release --no-pgo
 ```
 
-Releases: tag `vX.Y.Z` (or run the *Release builds* workflow). CI builds the
-committed `generated/` C on Linux, Windows and macOS and attaches
-`mtgp-<version>-<platform>.zip`, the compiled game. Locally:
-`scripts/package_release.sh build-release linux-x64`.
-
-## Symbols
-
-Progressive map: `symbols.toml` → `python3 tools/sync_symbols.py` →
-`psx_symbols.h` (`PSX_FN_*`). See `psxrecomp/docs/SYMBOLS.md`.
+Releases: run the *Release builds* workflow on GitHub (or push a `vX.Y.Z`
+tag). CI builds the committed `generated/` C on Linux, Windows and macOS and
+attaches `mtgp-<version>-<platform>.zip`. Locally:
+`scripts/package_release.sh build-release windows-x64`.
 
 ## Framework pins
 
-Submodule gitlinks (`psxrecomp`, optional `recomp-ui`, nested `recomp-net`)
-are authoritative. `framework_pins.txt` is an optional scaffold snapshot;
-release CI logs SHAs with `record_pins.sh` but builds whatever the gitlinks
-resolve to. Bump submodules deliberately — do not float on `main`/`master`
-in release CI.
+Submodule gitlinks (`psxrecomp`, `recomp-ui`, nested `recomp-net`) are
+authoritative. `framework_pins.txt` is an optional scaffold snapshot; release
+CI logs SHAs with `record_pins.sh` but builds whatever the gitlinks resolve
+to. Bump submodules deliberately and regenerate `generated/` afterwards.
 
 <!-- retcomm-readme-raid -->
 ---

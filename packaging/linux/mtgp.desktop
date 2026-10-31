@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Motor Toon Grand Prix
+Exec=Motor_Toon_Grand_Prix_Recompiled
+Icon=mtgp
+Categories=Game;
+Terminal=false

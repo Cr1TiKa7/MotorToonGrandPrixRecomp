@@ -1,0 +1,34 @@
+# Shared optimized release builder; run scripts/package_release.sh --channel public.
+# Requires the title disc for generation and fresh private boot training.
+schema = 1
+
+[product]
+name = "mtgp"
+display_name = "Motor Toon Grand Prix"
+exe_name = "Motor_Toon_Grand_Prix_Recompiled"
+version_file = "VERSION"
+
+[build]
+cmake_args = ["-DPSX_SDL_BACKEND=SDL3", "-DPSX_PGXP_VARIANT=OFF"]
+# Selective PGO defaults on for supported native GNU/Ninja toolchains. Do not
+# add per-title profile paths or reuse another build's training data.
+
+[aot]
+# Track ENGINE overlays, the relay loader and the Goodies programs, audited
+# against the original disc (aot/overlays.json, see docs/DEVELOPMENT.md).
+mode = "static"
+profile = "aot/overlays.json"
+
+[overlay_toolchain]
+ship = true
+
+[payload]
+start_here = "packaging/release/START_HERE.txt"
+files = ["README.md"]
+
+[linux]
+app_run = "packaging/linux/AppRun"
+desktop_file = "packaging/linux/mtgp.desktop"
+icon = "assets/psxrecomp.png"
+payload_dir = "mtgp"
+env_prefix = "MOTORTOONGRANDPRIXRECOMP"
