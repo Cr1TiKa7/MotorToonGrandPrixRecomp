@@ -6,7 +6,9 @@ name = "MotorToonGrandPrix"
 id = "SCUS-94355"
 players = 2
 exe = "disc/SCUS_943.55"
-disc = "D:\\RecompDev\\Motor Toon Grand Prix\\Motor Toon Grand Prix.cue"
+# Players pick their own disc in the launcher; developers pass --disc
+# (see docs/DEVELOPMENT.md), so no machine-specific path is committed.
+disc = "disc/Motor Toon Grand Prix.cue"
 load_address = "0x80010000"
 entry_pc = "0x80010530"
 text_size = "0x0009A800"
@@ -35,7 +37,7 @@ out_dir = "generated"
 strict = true
 
 [runtime]
-window_title = "MotorToonGrandPrix Recompiled"
+window_title = "Motor Toon Grand Prix Recompiled"
 memcard_dir = "saves"
 overlay_cache = true
 

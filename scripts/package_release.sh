@@ -54,9 +54,9 @@ exec bash "${PACKAGER}" \
   --build-dir "${BUILD_DIR}" \
   --artifact "${ARTIFACT_TAG}" \
   --zip-prefix mtgp \
-  --exe-name MotorToonGrandPrix_Recompiled \
-  --display-name "MotorToonGrandPrix Recompiled" \
+  --exe-name Motor_Toon_Grand_Prix_Recompiled \
+  --display-name "Motor Toon Grand Prix Recompiled" \
   --recompiler-build "${RECOMPILER_BUILD}" \
   --version-env RELEASE_VERSION \
-  --disc-hint "your legally owned MotorToonGrandPrix disc" \
+  --disc-hint "your legally owned Motor Toon Grand Prix (USA, SCUS-94355) disc" \
   "${EXTRA[@]}"
