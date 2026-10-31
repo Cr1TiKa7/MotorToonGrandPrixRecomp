@@ -1,0 +1,277 @@
+{
+  "schema": "psxrecomp AOT methods v1",
+  "game_id": "SCUS-94355",
+  "disc_hashes": {
+    "sha256": "2a3c8bc76f98d1005d19951be5807784e3c188a249342a05d15f78f1e48f519f"
+  },
+  "checks": [
+    {
+      "method": "words",
+      "file": "SCUS_943.55",
+      "base": "0x8000F800",
+      "values": {
+        "0x800110AC": "0x3C01801F",
+        "0x800110B0": "0x34212001",
+        "0x80011100": "0x24A53DC4",
+        "0x80025F0C": "0x0C007A47",
+        "0x80025F70": "0x0320F809",
+        "0x8001E9A4": "0x8F040008",
+        "0x8004CB3C": "0x24A57CF4",
+        "0x8004CB40": "0x0C007A47",
+        "0x8004CC2C": "0x0C004124",
+        "0x80010510": "0x00C00008"
+      }
+    },
+    {
+      "method": "words",
+      "file": "R.EXE",
+      "base": "0x8000F800",
+      "values": {
+        "0x80010F70": "0x3C01801F",
+        "0x80010F74": "0x34212001",
+        "0x80024C80": "0x0320F809"
+      }
+    }
+  ],
+  "generic_exclude_files": [
+    {
+      "files": [
+        "R.EXE"
+      ],
+      "reason": "R.EXE is declared as its code extent (0x80010000..0x8007D3D0); the rest of its PS-X EXE body is data (strings, tables) that must not be decoded as code."
+    }
+  ],
+  "images": [
+    {
+      "method": "fixed_address_extents",
+      "extents": [
+        {
+          "file": "R.EXE",
+          "file_offset": "0x800",
+          "base": "0x80010000",
+          "address": "0x80010000",
+          "size": "0x6D3D0",
+          "load_addr": "0x80010000",
+          "sha256": "9e02c29637d14155e8080f54941e8593d0fa064d34e1841b0fa6d71a077f98e1",
+          "entries": [
+            "0x80010530"
+          ]
+        },
+        {
+          "file": "MTGPX2.DAT",
+          "file_offset": "0x249800",
+          "base": "0x801c0000",
+          "address": "0x801c0000",
+          "size": "0x10af0",
+          "load_addr": "0x801c0000",
+          "sha256": "2a3fe3d161d46ae60cb10bddd2c8b5c918723f2336cfc05b23b4846d65f380d7",
+          "entries": [
+            "0x801c00cc"
+          ]
+        },
+        {
+          "file": "MTGPX2.DAT",
+          "file_offset": "0x2d5000",
+          "base": "0x801f2000",
+          "address": "0x801f2000",
+          "size": "0xdf0",
+          "load_addr": "0x801f2000",
+          "sha256": "ec4542ce734b1519fb3d57ad16d2115b6a97ce3333df2445de2dd40a4fdd5eb8",
+          "entries": [
+            "0x801f2000",
+            "0x801f2190",
+            "0x801f21d4",
+            "0x801f227c",
+            "0x801f244c",
+            "0x801f2510"
+          ]
+        },
+        {
+          "file": "MTGPX2.DAT",
+          "file_offset": "0x345000",
+          "base": "0x801f2000",
+          "address": "0x801f2000",
+          "size": "0x10b0",
+          "load_addr": "0x801f2000",
+          "sha256": "96ef68c9e01574fad9121b400173d87cb1908736b9508d03a1474c154560fed7",
+          "entries": [
+            "0x801f2000",
+            "0x801f2270",
+            "0x801f22cc",
+            "0x801f2560",
+            "0x801f2568",
+            "0x801f2600"
+          ]
+        },
+        {
+          "file": "MTGPX2.DAT",
+          "file_offset": "0x3c1800",
+          "base": "0x801f2000",
+          "address": "0x801f2000",
+          "size": "0x14e0",
+          "load_addr": "0x801f2000",
+          "sha256": "e567cc1e25d1bf8646f8b2dbdcf19dc1bc30a0368e3bb5065716e8f89c2b5a24",
+          "entries": [
+            "0x801f2000",
+            "0x801f2364",
+            "0x801f23c4",
+            "0x801f24d4",
+            "0x801f2860",
+            "0x801f28f0"
+          ]
+        },
+        {
+          "file": "MTGPX2.DAT",
+          "file_offset": "0x450000",
+          "base": "0x801f2000",
+          "address": "0x801f2000",
+          "size": "0x1ef0",
+          "load_addr": "0x801f2000",
+          "sha256": "2ab84909488c148ed9f5c9886dba44c3b97400a0f0f25e682a6ea0d415d1bf3c",
+          "entries": [
+            "0x801f2000",
+            "0x801f2998",
+            "0x801f2a00",
+            "0x801f2c74",
+            "0x801f3284",
+            "0x801f3300"
+          ]
+        },
+        {
+          "file": "MTGPX2.DAT",
+          "file_offset": "0x55e000",
+          "base": "0x801f2000",
+          "address": "0x801f2000",
+          "size": "0x1790",
+          "load_addr": "0x801f2000",
+          "sha256": "10feed06523991dcf12cd80fdbab2c8574047695b1ebdbf0b30b9a07b5b0c21b",
+          "entries": [
+            "0x801f2148",
+            "0x801f24dc",
+            "0x801f2568",
+            "0x801f2600",
+            "0x801f29a0",
+            "0x801f2a40"
+          ]
+        },
+        {
+          "file": "MTGPX2.DAT",
+          "file_offset": "0x5d2800",
+          "base": "0x801f2000",
+          "address": "0x801f2000",
+          "size": "0x1310",
+          "load_addr": "0x801f2000",
+          "sha256": "825ab699dc77ccc48bd56ca079977308d417f4c9f83cf4c7a1be4ebb1904454d",
+          "entries": [
+            "0x801f2000",
+            "0x801f23f0",
+            "0x801f244c",
+            "0x801f27cc",
+            "0x801f27d4",
+            "0x801f2860"
+          ]
+        },
+        {
+          "file": "MTGPX2.DAT",
+          "file_offset": "0x653800",
+          "base": "0x801f2000",
+          "address": "0x801f2000",
+          "size": "0x1324",
+          "load_addr": "0x801f2000",
+          "sha256": "e9d0cdd20f7bb1146e5e50df2774d39c4603afb24407e176cfc0ded40148060b",
+          "entries": [
+            "0x801f2000",
+            "0x801f2280",
+            "0x801f22bc",
+            "0x801f23cc",
+            "0x801f2690",
+            "0x801f2730"
+          ]
+        },
+        {
+          "file": "MTGPX2.DAT",
+          "file_offset": "0x6e5800",
+          "base": "0x801f2000",
+          "address": "0x801f2000",
+          "size": "0xfb0",
+          "load_addr": "0x801f2000",
+          "sha256": "e867c523f0d2794228e7d98ba52741bda346f97fcc31c705be35542b28610090",
+          "entries": [
+            "0x801f2000",
+            "0x801f22f8",
+            "0x801f2354",
+            "0x801f2480",
+            "0x801f2488",
+            "0x801f2500"
+          ]
+        },
+        {
+          "file": "MTGPX2.DAT",
+          "file_offset": "0x75d000",
+          "base": "0x801f2000",
+          "address": "0x801f2000",
+          "size": "0x1320",
+          "load_addr": "0x801f2000",
+          "sha256": "2ae6b6ea82b15cb08b111ce79da160b6aa06601892e4d6eba3cb2af4af71f7ea",
+          "entries": [
+            "0x801f2000",
+            "0x801f2320",
+            "0x801f2368",
+            "0x801f2440",
+            "0x801f2674",
+            "0x801f2730"
+          ]
+        },
+        {
+          "file": "MTGPX2.DAT",
+          "file_offset": "0x7e7800",
+          "base": "0x801f2000",
+          "address": "0x801f2000",
+          "size": "0x16e0",
+          "load_addr": "0x801f2000",
+          "sha256": "89f3ceefbad40d6d2f7bf6841c7fb10b576c3983981bccd83f4516ead6bf65a9",
+          "entries": [
+            "0x801f2000",
+            "0x801f2348",
+            "0x801f23c8",
+            "0x801f2400",
+            "0x801f28cc",
+            "0x801f2990"
+          ]
+        },
+        {
+          "file": "MTGPX2.DAT",
+          "file_offset": "0x8a7000",
+          "base": "0x801f2000",
+          "address": "0x801f2000",
+          "size": "0x830",
+          "load_addr": "0x801f2000",
+          "sha256": "d7ad09ffea8c082402857bf10db037cb65c68655c1bcf4d8684fa854e193f8a6",
+          "entries": [
+            "0x801f2000",
+            "0x801f2024",
+            "0x801f2048",
+            "0x801f2050",
+            "0x801f2058",
+            "0x801f2090"
+          ]
+        }
+      ],
+      "allow_missing": true
+    },
+    {
+      "method": "psx_exe",
+      "files": [
+        "SUB/SUB.EXE"
+      ]
+    },
+    {
+      "method": "psx_exe",
+      "files": [
+        "TANK/TANK.EXE"
+      ]
+    }
+  ],
+  "expected_records": 15,
+  "static_output": "generated/overlays_static.c"
+}

@@ -40,7 +40,7 @@ psxrecomp_add_game_runtime(psx-runtime
     # ENABLE_NETPLAY_IF_PRESENT
     # NETPLAY_LOBBY_URL ws://netplay.retcomm.net:8765
     ENABLE_SETUP_WIZARD
-    WINDOW_TITLE "MotorToonGrandPrix Recompiled"
+    WINDOW_TITLE "Motor Toon Grand Prix Recompiled"
     DEFAULT_GAME_CONFIG_PATH "game.toml"
     MAX_PLAYERS 2
     # LAUNCHER_BOXART "${CMAKE_CURRENT_SOURCE_DIR}/launcher_assets/img/boxart.tga"
@@ -49,6 +49,11 @@ psxrecomp_add_game_runtime(psx-runtime
     # CI configures with -DPSXRECOMP_REQUIRE_GAME_C=ON so a checkout without
     # it fails instead of building a setup host.
     GEN_MARKER "generated/SCUS_943.55_dispatch.c"
+    # Track ENGINE overlays, the relay loader and the Goodies programs
+    # (R.EXE, SUB.EXE, TANK.EXE), built by `generate` from aot/overlays.json.
+    # Must stay before the multi-value GEN_FULL_GLOB / CODEGEN_SETUP_SOURCES,
+    # which would otherwise swallow it as more source files.
+    GAME_OVERLAY_STATIC_C "${CMAKE_CURRENT_SOURCE_DIR}/generated/overlays_static.c"
     GEN_FULL_GLOB "generated/SCUS_943.55_full_*.c"
     CODEGEN_SETUP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/codegen_setup.c"
 )
