@@ -1,0 +1,54 @@
+# Autofilled by tools/new_project_layout/probe_disc.py from your legal dump.
+# Review before shipping. Runtime quirks / overlay seeds still need hand work.
+
+[game]
+name = "MotorToonGrandPrix"
+id = "SCUS-94355"
+players = 2
+exe = "disc/SCUS_943.55"
+disc = "D:\\RecompDev\\Motor Toon Grand Prix\\Motor Toon Grand Prix.cue"
+load_address = "0x80010000"
+entry_pc = "0x80010530"
+text_size = "0x0009A800"
+stack_base = "0x00000000"
+
+# Digests are for data Track 01 (first BINARY FILE / TRACK 01).
+[prepare_disc]
+out_dir = "disc"
+bin_name = "Motor Toon Grand Prix.bin"
+cue_name = "Motor Toon Grand Prix.cue"
+boot_exe = "SCUS_943.55"
+known_sizes = [568967616]
+known_md5 = [
+  "82cdb35aceed9c3a7b255e8b999b1536",
+]
+known_sha1 = [
+  "16925b62621871a66a7fd3dd858214f546d8092f",
+]
+known_crc32 = [
+  "f8447d90",
+]
+
+[recompiler]
+seeds = "seeds/ghidra_funcs.txt"
+out_dir = "generated"
+strict = true
+
+[runtime]
+window_title = "MotorToonGrandPrix Recompiled"
+memcard_dir = "saves"
+overlay_cache = true
+
+[video]
+renderer = "opengl"
+aspect_ratio = "4:3"
+
+[controller]
+default_mode = "digital"
+
+# Online mount gate: digests + track count + optional TOC fingerprint
+# (see docs/NETPLAY.md).
+[netplay]
+require_cue = true
+required_tracks = 1
+required_disc_fp = "a898e0aa3624ea98cfd9d57195ee939b1e6f4724df6d691f44bb94dfdd887e39"

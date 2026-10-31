@@ -1,0 +1,48 @@
+{
+  "format_version": 1,
+  "game": {
+    "name": "MotorToonGrandPrix",
+    "id": "SCUS-94355",
+    "boot_exe": "SCUS_943.55"
+  },
+  "marketing": {
+    "description": "Cartoon kart racing from Polyphony Digital, recompiled natively for PC.",
+    "publisher": "Sony Computer Entertainment",
+    "year": "1996",
+    "region": "NTSC-U",
+    "players": 2
+  },
+  "rom_identity": {
+    "cue_name": "Motor Toon Grand Prix.cue",
+    "bin_name": "Motor Toon Grand Prix.bin",
+    "track_counts": [
+      1
+    ],
+    "require_cue": true,
+    "data_track": {
+      "size": 568967616,
+      "md5": "82cdb35aceed9c3a7b255e8b999b1536",
+      "sha1": "16925b62621871a66a7fd3dd858214f546d8092f",
+      "crc32": "f8447d90"
+    },
+    "disc_fp": "a898e0aa3624ea98cfd9d57195ee939b1e6f4724df6d691f44bb94dfdd887e39"
+  },
+  "exe": {
+    "load_address": "0x80010000",
+    "entry_pc": "0x80010530",
+    "text_size": "0x0009A800",
+    "stack_base": "0x00000000"
+  },
+  "seeds": {
+    "count": 1424,
+    "source": "boot_exe_jal"
+  },
+  "warnings": [
+    "cue has only 1 TRACK \u2014 Track-01-only dumps fail multi-track netplay/catalog gates; prefer a full Redump cue."
+  ],
+  "notes": [
+    "entry_pc/load_address/text_size/stack_base taken from PS-X EXE header.",
+    "seeds are first-pass boot-EXE JAL targets (+ entry); expect to grow as overlays / runtime paths are discovered.",
+    "required_disc_fp is psxrecomp-toc-v1 (matches runtime DiscIdentity)."
+  ]
+}
