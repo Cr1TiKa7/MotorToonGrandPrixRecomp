@@ -1,0 +1,4 @@
+# Store and check out text as LF on every machine, independent of the
+# global/system core.autocrlf (Git for Windows defaults it to true, whose
+# LF/CRLF stderr warnings abort the framework's Windows PowerShell 5.1 scripts).
+* text=auto eol=lf
