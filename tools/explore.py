@@ -3,7 +3,8 @@ screenshots and sample native/interpreted dispatch counters.
 
 py -3 tools/explore.py --out DIR --script "3:start,6:cross,..." [--secs 120] [--shot-every 3]
          [--exe build-dev/Motor_Toon_Grand_Prix_Recompiled.exe] [--cue PATH] [--game game.toml]
-Actions: button names joined with '+', 'hold:<btns>:<secs>', 'turbo:on', 'turbo:off'.
+Actions: button names joined with '+', 'hold:<btns>:<secs>', 'turbo:on', 'turbo:off',
+'poke:<addr>:<byte>' (one write_ram byte, e.g. poke:0x800E4576:1).
 The cue defaults to %MTGP_CUE% (set by D:/RecompDev/dev-env.ps1).
 """
 
@@ -77,6 +78,9 @@ def main():
                     psxrun.hold_buttons(args.port, *btns.split("+"))
                     time.sleep(float(secs))
                     psxrun.release(args.port)
+                elif action.startswith("poke:"):
+                    _, addr, val = action.split(":")
+                    psxdbg.send("write_ram", port=args.port, addr=addr, val=int(val, 0))
                 else:
                     psxrun.press(args.port, *action.split("+"), frames=6)
                 log.append({"t": round(now, 1), "action": action})

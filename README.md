@@ -67,11 +67,19 @@ Checked with the automated smoke tests in `tests/smoke` (see
   overlays the game streams from `MTGPX2.DAT`, which are compiled ahead of
   time.
 
-Not yet verified:
+Known issue:
 
 - The three bonus programs in the **Goodies** menu (*Motor Toon GP R*,
-  *Submarine*, *Tank Combat*) are compiled ahead of time as well, but they only
-  unlock after progress in the game and have not been tested.
+  *Submarine X*, *Tank Combat*, unlocked after several championship wins)
+  load and start, then crash within seconds under the bundled OpenBIOS. The
+  game's loader relies on the BIOS call `SetConf` to reset the kernel's
+  interrupt handlers, as the retail BIOS does; OpenBIOS keeps the old handlers,
+  and the kernel jumps into memory the new program has overwritten. The fix
+  belongs in OpenBIOS. A retail BIOS selected in the launcher may avoid it
+  (untested).
+
+Not yet verified:
+
 - Two Player Battle (split screen).
 - OpenGL frame rate on a free GPU. The software renderer reached full speed
   (60 fps); measurements of the OpenGL renderer were taken with other games
