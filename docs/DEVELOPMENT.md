@@ -159,15 +159,14 @@ Erwartet: `Verified 15 images / 15 recipes`.
   (gerufen von `0x8006CA8C`).
 - Interpretiert laufen außerdem die BIOS-Patch-Slots im Kernel-RAM (`0x27B4`, `0x281C`). Das ist
   Absicht des Frameworks (`psxrecomp/docs/dynamic_handler_install.md`).
-- **Goodies-Programme stürzen unter OpenBIOS ab** (getestet 2026-11-01 mit gesetzten Freischalt-Flags):
-  TANK nach ~1 s (`DISPATCH FATAL: misaligned target 0x7FFF7FFF`), SUB (`unknown dispatch 0x28202820`),
-  R nach ~8 s (`misaligned target 0xAAAAAAAA`). Jedes Mal springt der Kernel-Exception-Handler (`ra` = `0x293C`)
-  über einen Knoten seiner Interrupt-Kette, dessen Speicher das neue Programm überschrieben hat.
-  Ursache: `boot.exe` ruft `SetConf` (A0:9Ch). Das Retail-BIOS verwirft dabei alle Exception-Ketten, Events und
-  Threads und installiert die Standard-Handler neu. OpenBIOS (`nugget/openbios/main/main.c`,
-  `setConfiguration`) speichert nur die drei Werte, die Handler des Hauptspiels bleiben eingehängt.
-  Kein Fehler im generierten Code: Relay-Loader und Zielprogramm laufen bis zum Absturz nativ aus dem
-  statischen Shard. Fix gehört in OpenBIOS, danach Framework-Pin anheben und neu generieren.
+- **Goodies-Programme brauchen das gepatchte OpenBIOS.** Mit dem OpenBIOS des offiziellen
+  Framework-Pins (`a7b37e07`) stürzen sie ab: TANK nach ~1 s (`DISPATCH FATAL: misaligned target 0x7FFF7FFF`),
+  SUB (`unknown dispatch 0x28202820`), R nach ~8 s (`misaligned target 0xAAAAAAAA`). Ursache: `boot.exe`
+  ruft `SetConf` (A0:9Ch) und verlässt sich darauf, dass der Kernel wie beim Retail-BIOS seine Tabellen neu
+  aufbaut. OpenBIOS speicherte nur die drei Werte, die Interrupt-Handler des Hauptspiels blieben eingehängt.
+  Fix und Re-Pin: [OPENBIOS_SETCONF.md](OPENBIOS_SETCONF.md). Im Submodul liegt er als lokaler Branch
+  `openbios-setconf-retail` (Commit `6197b8a1`). Damit laufen alle drei Programme (`-Test goodies`).
+  Das Spielprojekt pinnt weiterhin den offiziellen Stand, bis der Fix veröffentlicht ist.
 - Splitscreen und OpenGL-Bildrate auf freier GPU sind noch nicht geprüft.
 
 ### Goodies testen
@@ -176,6 +175,14 @@ Freischalt-Flags (Bytes in der Spielstand-Struktur bei `0x800E4550`, Magic „MT
 `0x800E4576` Tank Combat, `0x800E4577` Submarine X, `0x800E4578` Motor Toon GP R (≠ 0 = frei;
 `0x800E4574` Extra Characters ≠ 0, `0x800E4575` Additional Tracks ≥ 6). Ablauf: Hauptmenü, Flags per
 `write_ram` setzen, HOCH (Goodies), KREUZ, RUNTER ×2/×3/×4, KREUZ, im Dialog LINKS (Discard), KREUZ.
+
+Automatisch: `pwsh -File tools/run-smoke.ps1 -Build dev -Test goodies` (`tests/smoke/goodies_smoke.py`,
+je Programm 60 s: Bildzähler läuft, kein `FATAL` im Log, Bild ändert sich, Programmcode läuft nativ aus dem
+statischen Shard). Einzeln: `py -3 tests/smoke/goodies_smoke.py --exe … --cue … --program tank|sub|r`.
+Gemessen 2026-11-01 mit gepatchtem OpenBIOS: statische Dispatches TANK +1,4 Mio., SUB +10,6 Mio.,
+R +7,2 Mio. in je 60 s.
+
+Von Hand:
 
 ```powershell
 py -3 tools/explore.py --out D:\RecompDev\Temp\mtgp-tank --secs 95 --shot-every 3 --script "20:start,28:poke:0x800E4576:1,30:up,35:cross,41:down,43:down,46:cross,50:left,53:cross"

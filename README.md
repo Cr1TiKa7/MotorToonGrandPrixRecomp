@@ -71,12 +71,12 @@ Known issue:
 
 - The three bonus programs in the **Goodies** menu (*Motor Toon GP R*,
   *Submarine X*, *Tank Combat*, unlocked after several championship wins)
-  load and start, then crash within seconds under the bundled OpenBIOS. The
-  game's loader relies on the BIOS call `SetConf` to reset the kernel's
-  interrupt handlers, as the retail BIOS does; OpenBIOS keeps the old handlers,
-  and the kernel jumps into memory the new program has overwritten. The fix
-  belongs in OpenBIOS. A retail BIOS selected in the launcher may avoid it
-  (untested).
+  crash within seconds with the OpenBIOS that the official framework bundles.
+  The game's loader relies on the BIOS call `SetConf` to reset the kernel's
+  interrupt handlers, as the retail BIOS does; OpenBIOS kept the old handlers.
+  An OpenBIOS fix exists and all three programs run with it
+  ([docs/OPENBIOS_SETCONF.md](docs/OPENBIOS_SETCONF.md)); releases include it
+  once the patched framework is published.
 
 Not yet verified:
 

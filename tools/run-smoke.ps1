@@ -1,9 +1,11 @@
 # Run smoke tests against a local build.
-# Usage:  pwsh -File tools/run-smoke.ps1 [-Build dev|release] [-Test boot|race|all] [-Port 4370]
+# Usage:  pwsh -File tools/run-smoke.ps1 [-Build dev|release] [-Test boot|race|goodies|all] [-Port 4370]
 # Needs the dev build (debug server); the release build has no debug port.
+# 'goodies' unlocks and runs Tank Combat, Submarine X and Motor Toon GP R for
+# 60 s each (~12 min); it is not part of 'all'.
 param(
     [ValidateSet('dev', 'release')][string]$Build = 'dev',
-    [ValidateSet('boot', 'race', 'all')][string]$Test = 'boot',
+    [ValidateSet('boot', 'race', 'goodies', 'all')][string]$Test = 'boot',
     [int]$Port = 4370
 )
 

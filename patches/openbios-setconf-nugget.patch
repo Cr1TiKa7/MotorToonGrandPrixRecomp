@@ -1,0 +1,44 @@
+diff --git a/openbios/main/main.c b/openbios/main/main.c
+index 1b58b0d..84be19d 100644
+--- a/openbios/main/main.c
++++ b/openbios/main/main.c
+@@ -260,8 +260,12 @@ static void loadSystemCnf(const char *systemCnf, struct Configuration *configura
+ #define HEAP_SIZE 0x2000
+ static uint8_t s_heap[HEAP_SIZE];
+ 
+-static void kernelSetup() {
+-    psxprintf("KERNEL SETUP!\n");
++// Rebuilds the kernel tables from s_configuration. Resetting the kernel heap
++// drops every exception handler, event and thread (but the running one), then
++// the default handlers and the CD-ROM events are installed again. Returns with
++// interrupts enabled (initializeCDRomHandlersAndEvents leaves the critical
++// section).
++static void initKernelTables() {
+     syscall_kernInitheap(s_heap, HEAP_SIZE);
+ 
+     initHandlersArray(4);
+@@ -273,6 +277,11 @@ static void kernelSetup() {
+     initializeCDRomHandlersAndEvents();
+ }
+ 
++static void kernelSetup() {
++    psxprintf("KERNEL SETUP!\n");
++    initKernelTables();
++}
++
+ void *__attribute__((long_call)) fastMemset(void *ptr, int value, size_t num);
+ 
+ static void zeroUserMemoryUntilStack() {
+@@ -468,6 +477,12 @@ void setConfiguration(int eventsCount, int taskCount, void *stackBase) {
+     s_configuration.taskCount = taskCount;
+     s_configuration.eventsCount = eventsCount;
+     s_configuration.stackBase = stackBase;
++    // The retail kernel reinitializes itself here, and chain loaders rely on
++    // it: Motor Toon Grand Prix's boot.exe calls SetConf to drop the IRQ
++    // handlers of the program it is about to overwrite. Keep interrupts off
++    // while the handler chains are rebuilt.
++    enterCriticalSection();
++    initKernelTables();
+ }
+ 
+ void getConfiguration(int *eventsCount, int *taskCount, void **stackBase) {
