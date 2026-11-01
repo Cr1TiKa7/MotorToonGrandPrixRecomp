@@ -717,7 +717,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if ! git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null; then
-            git tag -a "${TAG}" -m "MotorToonGrandPrix Recompiled ${TAG}"
+            git tag -a "${TAG}" -m "Motor Toon Grand Prix Recompiled ${TAG}"
           fi
           if ! git ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null 2>&1; then
             git push origin "refs/tags/${TAG}"
@@ -728,7 +728,7 @@ jobs:
         with:
           tag_name: ${{ needs.prepare.outputs.tag }}
           # Quoted: titles may contain ':' (e.g. "Marvel vs. Capcom: …").
-          name: "MotorToonGrandPrix Recompiled ${{ needs.prepare.outputs.tag }}"
+          name: "Motor Toon Grand Prix Recompiled ${{ needs.prepare.outputs.tag }}"
           files: |
             dist/mtgp-*.zip
           generate_release_notes: true
