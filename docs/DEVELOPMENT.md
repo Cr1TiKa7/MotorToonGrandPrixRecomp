@@ -62,7 +62,7 @@ pwsh -File tools/run-smoke.ps1 -Build dev -Test all
 | Test | Prüft |
 |---|---|
 | `boot` | Debug-Port antwortet, Bildzähler läuft, ein Screenshot mit ≥ 16 Farben. |
-| `race` | Ohne Runtime-Autocompile (`PSX_OVERLAY_AUTOCOMPILE_OFF=1`), Software-Renderer. START öffnet das Hauptmenü, CROSS die Fahrerwahl, CROSS das Rennen (Bildwechsel nach jedem Druck). Das Strecken-`ENGINE`-Overlay läuft aus dem statischen Shard (`overlay_static_entries` im Bereich `0x801F2000–0x801F4000`) und nie interpretiert. 20 s Gas: Bild ändert sich, SPU hörbar (RMS ≥ 200), interpretierte Spielbefehle ≤ 3000 pro Bild (gemessen: 7). Bildrate wird nur gemeldet (`--min-fps` macht sie zur Bedingung). |
+| `race` | Ohne Runtime-Autocompile (`PSX_OVERLAY_AUTOCOMPILE_OFF=1`), Software-Renderer. START öffnet das Hauptmenü, CROSS die Fahrerwahl, CROSS das Rennen (Bildwechsel nach jedem Druck). Das Strecken-`ENGINE`-Overlay läuft aus dem statischen Shard (`overlay_static_entries` im Bereich `0x801F2000–0x801F4000`) und nie interpretiert. 20 s Gas: Bild ändert sich, SPU hörbar (RMS ≥ 200), interpretierte Spielbefehle ≤ 3000 pro Bild (gemessen: 7). Bildrate wird nur gemeldet (`--min-fps` macht sie zur Bedingung). Leistungsprüfung auf freiem Rechner: `--renderer game --min-fps 57` (OpenGL, gemessen 60,0). |
 
 - Ausgaben (Log, Screenshots, Speicherkarten, WAV) landen unter `D:\RecompDev\Temp\mtgp-<test>-<Zeit>\`.
 - Die Testschritte sind in emulierten Bildern getaktet (`START_FRAME` usw. in `race_smoke.py`), nicht
@@ -182,7 +182,11 @@ Danach den OpenBIOS-C-Code neu erzeugen (Schritte 3–9 in [OPENBIOS_SETCONF.md]
 weil sich Emitter oder Profil upstream geändert haben können. Dann `git -C psxrecomp push --force-with-lease`,
 Spielcode neu generieren, Tests laufen lassen und den neuen Submodul-Stand committen. Sobald Upstream den Fix
 übernommen hat, `.gitmodules` wieder auf `RetroPortingToolKit/psxrecomp` stellen und `git submodule sync`.
-- Splitscreen und OpenGL-Bildrate auf freier GPU sind noch nicht geprüft.
+- **Bildrate** (2026-11-01, RTX 3080, ohne Fremdlast): OpenGL mit 4x interner Auflösung 60,0 VBlanks/s im
+  Rennen (`race_smoke --renderer game`), Software-Renderer 35. `frame_perf` meldet ~51 ms pro *Spielbild*,
+  nicht pro VBlank: Laut `gp1_dump` (GP1 05h, Display-Start) zeigt das Spiel im Rennen alle 2–4 VBlanks ein
+  neues Bild (15–30 Bilder/s, eigene Bildrate des Spiels). Mit AION2/Roblox im Hintergrund fiel OpenGL auf 18–25.
+- Splitscreen ist noch nicht geprüft.
 
 ### Goodies testen
 

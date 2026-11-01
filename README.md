@@ -77,13 +77,14 @@ Checked with the automated smoke tests in `tests/smoke` (see
   start and run, also as native code. Tested for 60 s each from their title
   screens; playing them through is not tested yet. They need the OpenBIOS fix
   in the framework fork above; with upstream psxrecomp they crash.
+- Full speed with the default OpenGL renderer at 4x internal resolution:
+  60 vblanks per second in a Championship race (RTX 3080, 2026-11-01). The
+  game itself draws a new picture every 2–4 vblanks, as its own frame rate.
+  The CPU-side software renderer reached 35–60 on the same PC.
 
 Not yet verified:
 
 - Two Player Battle (split screen).
-- OpenGL frame rate on a free GPU. The software renderer reached full speed
-  (60 fps); measurements of the OpenGL renderer were taken with other games
-  using the GPU and are not representative.
 
 Please report problems with your platform, GPU and the steps that lead to them.
 
