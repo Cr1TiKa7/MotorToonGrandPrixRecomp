@@ -14,6 +14,12 @@ runtime and the [recomp-ui](https://github.com/RetroPortingToolKit/recomp-ui)
 launcher. It is not an emulator image and contains no game data: you need your
 own disc.
 
+The framework is pinned to the fork
+[cr1tika7/psxrecomp](https://github.com/cr1tika7/psxrecomp/tree/openbios-setconf-retail),
+which adds one OpenBIOS fix on top of upstream: `SetConf` rebuilds the kernel
+tables like the retail BIOS, so the Goodies programs can start
+([docs/OPENBIOS_SETCONF.md](docs/OPENBIOS_SETCONF.md)).
+
 | | |
 |---|---|
 | Game | Motor Toon Grand Prix (USA) |
@@ -66,17 +72,11 @@ Checked with the automated smoke tests in `tests/smoke` (see
   All race code runs as native code, including the per-track `ENGINE`
   overlays the game streams from `MTGPX2.DAT`, which are compiled ahead of
   time.
-
-Known issue:
-
-- The three bonus programs in the **Goodies** menu (*Motor Toon GP R*,
-  *Submarine X*, *Tank Combat*, unlocked after several championship wins)
-  crash within seconds with the OpenBIOS that the official framework bundles.
-  The game's loader relies on the BIOS call `SetConf` to reset the kernel's
-  interrupt handlers, as the retail BIOS does; OpenBIOS kept the old handlers.
-  An OpenBIOS fix exists and all three programs run with it
-  ([docs/OPENBIOS_SETCONF.md](docs/OPENBIOS_SETCONF.md)); releases include it
-  once the patched framework is published.
+- The three bonus programs in the **Goodies** menu (*Tank Combat*,
+  *Submarine X*, *Motor Toon GP R*, unlocked after several championship wins)
+  start and run, also as native code. Tested for 60 s each from their title
+  screens; playing them through is not tested yet. They need the OpenBIOS fix
+  in the framework fork above; with upstream psxrecomp they crash.
 
 Not yet verified:
 

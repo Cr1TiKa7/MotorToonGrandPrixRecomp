@@ -1,7 +1,7 @@
 [submodule "psxrecomp"]
 	path = psxrecomp
-	url = https://github.com/RetroPortingToolKit/psxrecomp.git
-	branch = master
+	url = https://github.com/cr1tika7/psxrecomp.git
+	branch = openbios-setconf-retail
 [submodule "recomp-ui"]
 	path = recomp-ui
 	url = https://github.com/RetroPortingToolKit/recomp-ui.git

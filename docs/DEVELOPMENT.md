@@ -159,14 +159,29 @@ Erwartet: `Verified 15 images / 15 recipes`.
   (gerufen von `0x8006CA8C`).
 - Interpretiert laufen außerdem die BIOS-Patch-Slots im Kernel-RAM (`0x27B4`, `0x281C`). Das ist
   Absicht des Frameworks (`psxrecomp/docs/dynamic_handler_install.md`).
-- **Goodies-Programme brauchen das gepatchte OpenBIOS.** Mit dem OpenBIOS des offiziellen
-  Framework-Pins (`a7b37e07`) stürzen sie ab: TANK nach ~1 s (`DISPATCH FATAL: misaligned target 0x7FFF7FFF`),
+- **Goodies-Programme brauchen das gepatchte OpenBIOS.** Mit dem OpenBIOS des Upstream-Frameworks
+  (`a7b37e07`) stürzen sie ab: TANK nach ~1 s (`DISPATCH FATAL: misaligned target 0x7FFF7FFF`),
   SUB (`unknown dispatch 0x28202820`), R nach ~8 s (`misaligned target 0xAAAAAAAA`). Ursache: `boot.exe`
   ruft `SetConf` (A0:9Ch) und verlässt sich darauf, dass der Kernel wie beim Retail-BIOS seine Tabellen neu
   aufbaut. OpenBIOS speicherte nur die drei Werte, die Interrupt-Handler des Hauptspiels blieben eingehängt.
-  Fix und Re-Pin: [OPENBIOS_SETCONF.md](OPENBIOS_SETCONF.md). Im Submodul liegt er als lokaler Branch
-  `openbios-setconf-retail` (Commit `6197b8a1`). Damit laufen alle drei Programme (`-Test goodies`).
-  Das Spielprojekt pinnt weiterhin den offiziellen Stand, bis der Fix veröffentlicht ist.
+  Fix und Re-Pin: [OPENBIOS_SETCONF.md](OPENBIOS_SETCONF.md). Damit laufen alle drei Programme
+  (`-Test goodies`). Das Projekt pinnt deshalb den Fork (nächster Abschnitt).
+
+### Framework-Fork
+
+`psxrecomp` zeigt auf `https://github.com/cr1tika7/psxrecomp.git`, Branch `openbios-setconf-retail`
+(= Upstream `a7b37e07` + der OpenBIOS-Commit `6197b8a1`). Im Submodul ist `origin` der Fork und
+`upstream` das Original. Upstream nachziehen:
+
+```powershell
+git -C psxrecomp fetch upstream
+git -C psxrecomp rebase upstream/master          # Konflikte meist nur in generated/OpenBIOS_*.c
+```
+
+Danach den OpenBIOS-C-Code neu erzeugen (Schritte 3–9 in [OPENBIOS_SETCONF.md](OPENBIOS_SETCONF.md)),
+weil sich Emitter oder Profil upstream geändert haben können. Dann `git -C psxrecomp push --force-with-lease`,
+Spielcode neu generieren, Tests laufen lassen und den neuen Submodul-Stand committen. Sobald Upstream den Fix
+übernommen hat, `.gitmodules` wieder auf `RetroPortingToolKit/psxrecomp` stellen und `git submodule sync`.
 - Splitscreen und OpenGL-Bildrate auf freier GPU sind noch nicht geprüft.
 
 ### Goodies testen
