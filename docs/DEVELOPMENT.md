@@ -95,6 +95,20 @@ Screenshot nach jedem Druck sind verlässlicher.
   Hauptmenü (Emulationsbild ~870).
 - Hauptmenü: Championship Race, Single Race, Time Attack, Free Run, Two Player Battle,
   Replay Theater, Options, Goodies. Von „Championship Race“ aus springt HOCH zu „Goodies“.
+  - **Cursor im RAM:** u32 bei `0x8008C70C` (Menü-Struct), 1 = Championship … 8 = Goodies. Er bleibt beim
+    erneuten Betreten erhalten. Zuverlässiger als gezählte Tastendrücke: drücken, bis der Wert stimmt.
+  - Eintrags-Tabelle bei `0x8008C67C` (12 Byte je Eintrag: id, wählbar, Font, Ausrichtung, x, y, Label).
+    Nicht wählbare Einträge werden grau gezeichnet und beim Blättern übersprungen.
+  - Replay Theater ist nur wählbar, wenn die Speicherkarten-Prüfung (`0x8005149C`) passt (`0x8008C6C5`).
+- **Two Player Battle ist der Link-Kabel-Modus, kein Splitscreen** (statische Analyse + Laufzeit-Gegenprobe
+  2026-11-01). Der Menü-Callback `func_80033F60` setzt die Wählbarkeit (`0x8008C6B9`) jedes Bild auf
+  „Link-Status `0x8008EBC0` == 1“. Den setzt nur der PsyQ-libcomb-Handshake über SIO1
+  (`func_8005071C("M2N0")` beim Boot, Poll `func_80050940`: „01“/„02“+ID, dann „LINKED“). Die Runtime
+  emuliert SIO1 nicht (`sio.c` liest `0x1F801050–5E` als 0), daher bleibt der Eintrag grau, wie an einer
+  Konsole ohne Kabel. Pad 2 spielt keine Rolle (`InitPAD`-Puffer 2 meldet ihn korrekt als `00 41`).
+  Gegenprobe: `write_ram 0x8008EBC0 = 1` macht den Eintrag weiß und wählbar; die Auswahl landet ohne
+  Gegenstelle wieder im Hauptmenü. Unterstützen ließe sich der Modus nur mit SIO1-Emulation im Framework,
+  z. B. als Link über Netplay zwischen zwei Instanzen.
 - Championship Race → Fahrerwahl (Captain Rock, Princess Jean, Bolbox, Penguin Bros., Raptor & Raptor,
   Vanity, Billy the Tough, Ching Tong Chang) → Streckenkarte „Toon Island II“ → Countdown → Rennen.
 - Goodies: alle Einträge zeigen anfangs „????“ / „Not Yet!“. Sie werden durch Spielfortschritt
@@ -186,7 +200,7 @@ Spielcode neu generieren, Tests laufen lassen und den neuen Submodul-Stand commi
   Rennen (`race_smoke --renderer game`), Software-Renderer 35. `frame_perf` meldet ~51 ms pro *Spielbild*,
   nicht pro VBlank: Laut `gp1_dump` (GP1 05h, Display-Start) zeigt das Spiel im Rennen alle 2–4 VBlanks ein
   neues Bild (15–30 Bilder/s, eigene Bildrate des Spiels). Mit AION2/Roblox im Hintergrund fiel OpenGL auf 18–25.
-- Splitscreen ist noch nicht geprüft.
+- Kein Zwei-Spieler-Modus: Two Player Battle braucht ein Link-Kabel (SIO1), siehe „Spielablauf und Menüs“.
 
 ### Goodies testen
 

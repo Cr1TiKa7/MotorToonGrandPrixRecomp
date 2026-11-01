@@ -49,7 +49,7 @@ the same change for pcsx-redux `55fbf04` is `psxrecomp/bios/openbios-setconf.pat
 - `setConfiguration()` stores the values, enters a critical section and calls
   `initKernelTables()`. That function ends in `initializeCDRomHandlersAndEvents()`,
   which leaves the critical section, so SetConf returns with interrupts enabled,
-  as on retail and in PCSX-ReARMed.
+  as in PCSX-ReARMed. psx-spx does not say what happens to interrupts.
 
 The patch applies to nugget `5414bd9` (2026-10-31) and builds with the
 pinned toolchain.

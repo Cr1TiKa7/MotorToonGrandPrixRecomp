@@ -125,6 +125,21 @@ def hold_buttons(port, *names):
     psxdbg.send("set_input", port=port, buttons=mask(*names))
 
 
+def plug_pad2(port, *names):
+    """Plug a digital pad into port 2 holding the named buttons (none = all released).
+
+    It stays plugged until a clear_input without a pad port; release pad 2 by
+    calling this again with no names, never with clear_input."""
+    psxdbg.send("set_input", port=port, buttons=mask(*names), payload={"port": 2, "connected": 1})
+
+
+def press_pad2(port, *names, secs=0.15):
+    """Tap the named buttons on pad 2, which must already be plugged in."""
+    plug_pad2(port, *names)
+    time.sleep(secs)
+    plug_pad2(port)
+
+
 def read_bytes(port, addr, n):
     reply = psxdbg.send("read_ram", port=port, addr="0x%08X" % addr, len=n)
     return bytes.fromhex(reply["hex"])

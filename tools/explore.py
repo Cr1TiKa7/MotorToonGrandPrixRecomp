@@ -4,7 +4,8 @@ screenshots and sample native/interpreted dispatch counters.
 py -3 tools/explore.py --out DIR --script "3:start,6:cross,..." [--secs 120] [--shot-every 3]
          [--exe build-dev/Motor_Toon_Grand_Prix_Recompiled.exe] [--cue PATH] [--game game.toml]
 Actions: button names joined with '+', 'hold:<btns>:<secs>', 'turbo:on', 'turbo:off',
-'poke:<addr>:<byte>' (one write_ram byte, e.g. poke:0x800E4576:1).
+'poke:<addr>:<byte>' (one write_ram byte, e.g. poke:0x800E4576:1), 'plug2' (plug a digital
+pad into port 2), 'p2:<btns>' (tap on pad 2), 'hold2:<btns>:<secs>'.
 The cue defaults to %MTGP_CUE% (set by D:/RecompDev/dev-env.ps1).
 """
 
@@ -81,6 +82,15 @@ def main():
                 elif action.startswith("poke:"):
                     _, addr, val = action.split(":")
                     psxdbg.send("write_ram", port=args.port, addr=addr, val=int(val, 0))
+                elif action == "plug2":
+                    psxrun.plug_pad2(args.port)
+                elif action.startswith("p2:"):
+                    psxrun.press_pad2(args.port, *action[3:].split("+"))
+                elif action.startswith("hold2:"):
+                    _, btns, secs = action.split(":")
+                    psxrun.plug_pad2(args.port, *btns.split("+"))
+                    time.sleep(float(secs))
+                    psxrun.plug_pad2(args.port)
                 else:
                     psxrun.press(args.port, *action.split("+"), frames=6)
                 log.append({"t": round(now, 1), "action": action})

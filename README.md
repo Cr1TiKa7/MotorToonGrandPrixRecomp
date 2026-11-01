@@ -24,7 +24,7 @@ tables like the retail BIOS, so the Goodies programs can start
 |---|---|
 | Game | Motor Toon Grand Prix (USA) |
 | Serial | SCUS-94355 |
-| Players | 1–2 |
+| Players | 1 (two-player mode needs a link cable, not supported) |
 | Publisher | Sony Computer Entertainment |
 | Year | 1996 |
 | Status | **Preview** — boots, menus and Championship races run natively |
@@ -82,9 +82,12 @@ Checked with the automated smoke tests in `tests/smoke` (see
   game itself draws a new picture every 2–4 vblanks, as its own frame rate.
   The CPU-side software renderer reached 35–60 on the same PC.
 
-Not yet verified:
+Not supported:
 
-- Two Player Battle (split screen).
+- **Two Player Battle.** The game has no split screen: this mode links two
+  consoles with a link cable over the serial port (SIO1). The runtime does not
+  emulate that port, so the menu entry stays greyed out, as on a console
+  without a cable.
 
 Please report problems with your platform, GPU and the steps that lead to them.
 
