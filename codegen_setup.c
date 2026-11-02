@@ -6,7 +6,7 @@
 #include "psxrecomp_codegen_host.h"
 
 static const PsxrecompCodegenHostConfig kCodegenConfig = {
-    .display_name = "MotorToonGrandPrix",
+    .display_name = "Motor Toon Grand Prix",
     .project_root_env = "MOTORTOONGRANDPRIXRECOMP_PROJECT_ROOT",
     .build_dir_env = "MOTORTOONGRANDPRIXRECOMP_BUILD_DIR",
     .force_setup_env = "MOTORTOONGRANDPRIXRECOMP_FORCE_SETUP",
@@ -16,7 +16,7 @@ static const PsxrecompCodegenHostConfig kCodegenConfig = {
     .gen_marker_relpath = "generated/SCUS_943.55_dispatch.c",
     .build_dir_name = "build-release",
     .cmake_target = "psx-runtime",
-    .exe_basename = "MotorToonGrandPrix_Recompiled",
+    .exe_basename = "Motor_Toon_Grand_Prix_Recompiled",
     .prepare_note =
         "Uses your legal disc with the local psxrecomp SDK to generate "
         "BIOS + game C, then cmake --build. The product lives under "
